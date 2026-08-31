@@ -1,13 +1,78 @@
 const botaoLimpar = document.getElementById("limpar")
+const botaoSomar = document.getElementById("somar")
+const botaoSubtrair = document.getElementById("subtrair")
+const botaoMultiplicar = document.getElementById("multiplicar")
+const botaoDividir = document.getElementById("dividir")
+const botaoIgual = document.getElementById("igual")
+const botaoBackspace = document.getElementById("backspace")
+const botaoPorcentagem = document.getElementById("porcentagem")
+
 const display = document.getElementById("display")
 const botoesNumeros = document.querySelectorAll(".numero")
 
-botoesNumeros.forEach(function(botao){
-    
-    botao.addEventListener("click", function(){
-        display.innerText = botao.innerText
+let valorAtual = ""
+let primeiroValor = null
+let operacao = null
+
+botoesNumeros.forEach(function(botao) {
+    botao.addEventListener("click", function() {
+        valorAtual += botao.innerText
+        display.innerText = valorAtual
+
     })
+
 })
+
+botaoSomar.addEventListener("click", function() {
+    selecionarOperacao("+")
+
+})
+
+botaoSubtrair.addEventListener("click", function() {
+    selecionarOperacao("-")
+
+})
+
+botaoMultiplicar.addEventListener("click", function() {
+    selecionarOperacao("*")
+
+})
+
+botaoDividir.addEventListener("click", function() {
+    selecionarOperacao("/")
+
+})
+
+botaoBackspace.addEventListener("click", function(){
+    valorAtual = valorAtual.slice(0,-1)
+
+    display.innerText = valorAtual || "0"
+})
+
+botaoPorcentagem.addEventListener("click", function(){
+    valorAtual = String(Number(valorAtual)/100)
+
+    display.innerText = valorAtual
+
+})
+
+botaoIgual.addEventListener("click", function (){
+    const segundoValor = Number(valorAtual)
+    const resultado = calcular(primeiroValor,segundoValor,operacao)
+
+    display.innerText = resultado
+    valorAtual = String(resultado)
+
+    primeiroValor = null
+    operacao = null
+})
+
+function selecionarOperacao(operacaoSelecionada){
+    primeiroValor = Number(valorAtual)
+    operacao = operacaoSelecionada
+    valorAtual = ""
+    display.innerText = "0"
+}
 
 function calcular (valor1, valor2, operacao){
     if(operacao === "+") 
@@ -30,48 +95,13 @@ function calcular (valor1, valor2, operacao){
     }   
     }
 
-function executarCalculo(operacao) {
+function limparResultado() {
+    valorAtual = ""
+    display.innerText = "0"
 
-    if(numero1.value === "" || numero2.value === ""){
-        resultadoTela.innerText = "Digite os dois números!"
-        return
-    }
-  
-    const valor1 = Number(numero1.value)
-    const valor2 = Number(numero2.value)
-
-    if(isNaN(valor1) || isNaN(valor2)){
-        resultadoTela.innerText = "Digite números válidos!"
-        return
-    }
-
-    const resultado = calcular(valor1, valor2, operacao)
-
-    resultadoTela.innerText = `Resultado: ${resultado}`
 }
 
-function limparResultado(){
-    numero1.value = ""
-    numero2.value = ""
-    resultadoTela.innerText = "Resultado:"
-}
-
-botaoSomar.addEventListener("click",function (){
-   executarCalculo("+")
-})
-
-botaoSubtrair.addEventListener("click", function (){
-    executarCalculo("-")
-})
-
-botaoMultiplicar.addEventListener("click", function (){
-    executarCalculo("*")
-})
-
-botaoDividir.addEventListener("click", function (){
-    executarCalculo("/")
-})
-
-botaoLimpar.addEventListener("click", function (){
+botaoLimpar.addEventListener("click", function() {
     limparResultado()
+
 })
