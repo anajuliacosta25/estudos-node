@@ -24,6 +24,42 @@ botoesNumeros.forEach(function(botao) {
 
 })
 
+function selecionarOperacao(operacaoSelecionada){
+    if(operacao !== null){
+        const segundoValor = Number(valorAtual.replace(",","."))
+        const resultado = calcular(primeiroValor, segundoValor, operacao)
+
+        primeiroValor = resultado
+        display.innerText = resultado
+    } else {
+        primeiroValor = Number(valorAtual.replace(",","."))
+    }
+    
+    operacao = operacaoSelecionada
+    valorAtual = ""
+}
+
+function calcular (valor1, valor2, operacao){
+    if(operacao === "+") 
+        return valor1 + valor2
+    else  if 
+    (operacao === "-") 
+        return valor1 - valor2
+    else if
+    (operacao === "*")
+        return valor1 * valor2
+    else if
+    (operacao === "/") {
+        if(valor2 === 0){
+            return "Não é possível realizar a divisão por 0"
+        }
+        return valor1 / valor2    
+    }
+    else {
+        return "Operação inválida."
+    }   
+    }
+
 botaoSomar.addEventListener("click", function() {
     selecionarOperacao("+")
 })
@@ -80,42 +116,6 @@ botaoIgual.addEventListener("click", function (){
     primeiroValor = null
     operacao = null
 })
-
-function selecionarOperacao(operacaoSelecionada){
-    if(operacao !== null){
-        const segundoValor = Number(valorAtual.replace(",","."))
-        const resultado = calcular(primeiroValor, segundoValor, operacao)
-
-        primeiroValor = resultado
-        display.innerText = resultado
-    } else {
-        primeiroValor = Number(valorAtual.replace(",","."))
-    }
-    
-    operacao = operacaoSelecionada
-    valorAtual = ""
-}
-
-function calcular (valor1, valor2, operacao){
-    if(operacao === "+") 
-        return valor1 + valor2
-    else  if 
-    (operacao === "-") 
-        return valor1 - valor2
-    else if
-    (operacao === "*")
-        return valor1 * valor2
-    else if
-    (operacao === "/") {
-        if(valor2 === 0){
-            return "Não é possível realizar a divisão por 0"
-        }
-        return valor1 / valor2    
-    }
-    else {
-        return "Operação inválida."
-    }   
-    }
 
 function limparResultado() {
     valorAtual = ""
