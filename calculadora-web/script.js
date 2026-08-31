@@ -6,6 +6,7 @@ const botaoDividir = document.getElementById("dividir")
 const botaoIgual = document.getElementById("igual")
 const botaoBackspace = document.getElementById("backspace")
 const botaoPorcentagem = document.getElementById("porcentagem")
+const botaoVirgula = document.getElementById("virgula")
 
 const display = document.getElementById("display")
 const botoesNumeros = document.querySelectorAll(".numero")
@@ -25,22 +26,18 @@ botoesNumeros.forEach(function(botao) {
 
 botaoSomar.addEventListener("click", function() {
     selecionarOperacao("+")
-
 })
 
 botaoSubtrair.addEventListener("click", function() {
     selecionarOperacao("-")
-
 })
 
 botaoMultiplicar.addEventListener("click", function() {
     selecionarOperacao("*")
-
 })
 
 botaoDividir.addEventListener("click", function() {
     selecionarOperacao("/")
-
 })
 
 botaoBackspace.addEventListener("click", function(){
@@ -50,14 +47,31 @@ botaoBackspace.addEventListener("click", function(){
 })
 
 botaoPorcentagem.addEventListener("click", function(){
-    valorAtual = String(Number(valorAtual)/100)
+    const valor = Number(valorAtual.replace(",","."))
+
+    if(operacao === "+" || operacao === "-"){
+        valorAtual = String(primeiroValor * valor/100)
+    } else {
+        valorAtual = String(valor / 100)
+    }
 
     display.innerText = valorAtual
+})
 
+botaoVirgula.addEventListener("click", function (){
+    if(valorAtual.includes(",")){
+        return
+    }
+    if(valorAtual === ""){
+        valorAtual = "0"
+    }
+    valorAtual += ","
+
+    display.innerText = valorAtual
 })
 
 botaoIgual.addEventListener("click", function (){
-    const segundoValor = Number(valorAtual)
+    const segundoValor = Number(valorAtual.replace(",","."))
     const resultado = calcular(primeiroValor,segundoValor,operacao)
 
     display.innerText = resultado
@@ -68,10 +82,18 @@ botaoIgual.addEventListener("click", function (){
 })
 
 function selecionarOperacao(operacaoSelecionada){
-    primeiroValor = Number(valorAtual)
+    if(operacao !== null){
+        const segundoValor = Number(valorAtual.replace(",","."))
+        const resultado = calcular(primeiroValor, segundoValor, operacao)
+
+        primeiroValor = resultado
+        display.innerText = resultado
+    } else {
+        primeiroValor = Number(valorAtual.replace(",","."))
+    }
+    
     operacao = operacaoSelecionada
     valorAtual = ""
-    display.innerText = "0"
 }
 
 function calcular (valor1, valor2, operacao){
@@ -97,11 +119,11 @@ function calcular (valor1, valor2, operacao){
 
 function limparResultado() {
     valorAtual = ""
+    primeiroValor = null
+    operacao = null
     display.innerText = "0"
-
 }
 
 botaoLimpar.addEventListener("click", function() {
     limparResultado()
-
 })
